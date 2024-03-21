@@ -21,20 +21,27 @@ local plugins = {
       require "custom.configs.lspconfig"
     end, -- Override to setup mason-lspconfig
   },
+  {
+    "rust-lang/rust.vim",
+    ft = "rust",
+    init = function()
+      vim.g.rustfmt_autosave = 1
+    end,
+  },
   -- solarized light
   {
     "shaunsingh/solarized.nvim",
-    lazy = true,
-    priority = 1000,
-    config = function()
-      vim.cmd [[colorscheme solarized]]
-    end,
+    lazy = false,
   },
 
   -- override plugin configs
   {
     "williamboman/mason.nvim",
-    opts = overrides.mason,
+    opts = {
+      ensure_installed = {
+        "rust-analyzer",
+      },
+    },
   },
 
   {
@@ -47,7 +54,6 @@ local plugins = {
     opts = overrides.nvimtree,
   },
 
-  -- Install a plugin
   {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
@@ -60,6 +66,15 @@ local plugins = {
     lazy = false,
     config = function()
       require "custom.configs.copilot"
+    end,
+  },
+  -- MarkDown
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function()
+      vim.fn["mkdp#util#install"]()
     end,
   },
 
